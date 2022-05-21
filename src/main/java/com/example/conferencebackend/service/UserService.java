@@ -1,7 +1,8 @@
 package com.example.conferencebackend.service;
 
+import com.example.conferencebackend.models.Lecture;
 import com.example.conferencebackend.models.User;
-import com.example.conferencebackend.models.UserNotFoundException;
+import com.example.conferencebackend.models.exception.UserNotFoundException;
 import com.example.conferencebackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,10 +16,12 @@ import java.util.stream.StreamSupport;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final LectureService lectureService;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, LectureService lectureService) {
         this.userRepository = userRepository;
+        this.lectureService = lectureService;
     }
 
     public User addUser(User user) {
@@ -44,6 +47,23 @@ public class UserService {
         User userToEdit = getUser(id);
         userToEdit.setEmail(user.getEmail());
         return userToEdit;
+    }
+
+    @Transactional
+    public User registerInLecture(Long userId, Long lectureId) {
+        User user = getUser(userId);
+        Lecture lecture = lectureService.getLecture(lectureId);
+        // lecture.addUser(user);
+        user.registerInLecture(lecture);
+        return user;
+    }
+
+    @Transactional
+    public User registerOutOfLecture(Long userId, Long lectureId) {
+        User user = new User();
+        Lecture lecture = lectureService.getLecture(lectureId);
+        user.registerOutOfLecture(lecture);
+        return user;
     }
 
 }

@@ -23,15 +23,9 @@ public class Lecture {
     @ManyToMany(mappedBy = "registeredLectures")
     private List<User> users = new ArrayList<>();
 
-//    public Lecture(String subject, String startTime, String endTime) {
-//        this.subject = subject;
-//        this.startTime = startTime;
-//        this.endTime = endTime;
+//    public void addUser(User user) {
+//        users.add(user);
 //    }
-
-    public void addUser(User user) {
-        users.add(user);
-    }
 
     public static Lecture from(LectureDto lectureDto) {
         Lecture lecture = new Lecture();

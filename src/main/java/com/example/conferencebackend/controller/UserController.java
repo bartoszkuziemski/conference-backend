@@ -55,6 +55,12 @@ public class UserController {
         return new ResponseEntity<>(UserDto.from(user), HttpStatus.OK);
     }
 
+    @PostMapping(value = "{userId}/lectures/{lectureId}/add")
+    public ResponseEntity<UserDto> registerInLecture(@PathVariable final Long userId, @PathVariable final Long lectureId) {
+        User user = userService.registerInLecture(userId, lectureId);
+        return new ResponseEntity<>(UserDto.from(user), HttpStatus.OK);
+    }
+
 
 
 }

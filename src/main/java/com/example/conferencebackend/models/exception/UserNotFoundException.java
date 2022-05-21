@@ -1,4 +1,4 @@
-package com.example.conferencebackend.models;
+package com.example.conferencebackend.models.exception;
 
 import java.text.MessageFormat;
 

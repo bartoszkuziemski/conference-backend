@@ -28,13 +28,12 @@ public class User {
     private List<Lecture> registeredLectures = new ArrayList<>();
 
 
-//    public User(String login, String email) {
-//        this.login = login;
-//        this.email = email;
-//    }
-
     public void registerInLecture(Lecture lecture) {
         registeredLectures.add(lecture);
+    }
+
+    public void registerOutOfLecture(Lecture lecture) {
+        registeredLectures.remove(lecture);
     }
 
     public static User from(UserDto userDto) {
