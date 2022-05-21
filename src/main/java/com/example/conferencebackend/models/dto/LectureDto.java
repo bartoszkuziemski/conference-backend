@@ -1,19 +1,22 @@
 package com.example.conferencebackend.models.dto;
 
 import com.example.conferencebackend.models.Lecture;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Data
+@Getter
+@Setter
 public class LectureDto {
 
     private Long id;
     private String subject;
     private String startTime;
     private String endTime;
+
     private List<UserDto> usersDto = new ArrayList<>();
 
     public static LectureDto from(Lecture lecture) {

@@ -1,24 +1,28 @@
 package com.example.conferencebackend.models;
 
 import com.example.conferencebackend.models.dto.UserDto;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "[User]") // User is a keyword in SQL, we have to write name in []
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String login;
     private String email;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "registered_lectures",
