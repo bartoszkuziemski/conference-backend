@@ -1,10 +1,10 @@
 package com.example.conferencebackend.security;
 
 public enum ApplicationUserPermission {
-    STUDENT_READ("student:read"),
-    STUDENT_WRITE("student:write"),
-    COURSE_READ("course:read"),
-    COURSE_WRITE("course:write");
+    USER_READ("user:read"),
+    USER_WRITE("user:write"),
+    LECTURE_READ("lecture:read"),
+    LECTURE_WRITE("lecture:write");
 
     private final String permission;
 

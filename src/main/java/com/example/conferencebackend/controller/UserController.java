@@ -1,6 +1,6 @@
 package com.example.conferencebackend.controller;
 
-import com.example.conferencebackend.models.User;
+import com.example.conferencebackend.models.CustomUser;
 import com.example.conferencebackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,38 +22,44 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> addUser(@RequestBody final User user) {
-        return new ResponseEntity<>(userService.addUser(user), HttpStatus.OK);
+    public ResponseEntity<CustomUser> addUser(@RequestBody final CustomUser customUser) {
+        return new ResponseEntity<>(userService.addUser(customUser), HttpStatus.OK);
     }
 
-    @GetMapping(value = "{id}")
-    public ResponseEntity<User> getUser(@PathVariable final Long id) {
-        User user = userService.getUser(id);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+//    @GetMapping(value = "{id}")
+//    public ResponseEntity<CustomUser> getUser(@PathVariable final Long id) {
+//        CustomUser customUser = userService.getUser(id);
+//        return new ResponseEntity<>(customUser, HttpStatus.OK);
+//    }
+
+    @GetMapping(value = "{login}")
+    public ResponseEntity<CustomUser> getUserByLogin(@PathVariable final String login) {
+        CustomUser customUser = userService.getUserByLogin(login);
+        return new ResponseEntity<>(customUser, HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getUsers() {
-        List<User> users = userService.getUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    public ResponseEntity<List<CustomUser>> getUsers() {
+        List<CustomUser> customUsers = userService.getUsers();
+        return new ResponseEntity<>(customUsers, HttpStatus.OK);
     }
 
     @Transactional
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable final Long id) {
-        User user = userService.deleteUser(id);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<CustomUser> deleteUser(@PathVariable final Long id) {
+        CustomUser customUser = userService.deleteUser(id);
+        return new ResponseEntity<>(customUser, HttpStatus.OK);
     }
 
     @PutMapping(value = "{id}")
-    public ResponseEntity<User> editUser(@PathVariable final Long id, @RequestBody final User user) {
-        return new ResponseEntity<>(userService.editUser(id, user), HttpStatus.OK);
+    public ResponseEntity<CustomUser> editUser(@PathVariable final Long id, @RequestBody final CustomUser customUser) {
+        return new ResponseEntity<>(userService.editUser(id, customUser), HttpStatus.OK);
     }
 
     @PutMapping(value = "{userId}/lectures/{lectureId}/add")
-    public ResponseEntity<User> registerInLecture(@PathVariable final Long userId, @PathVariable final Long lectureId) {
-        User user = userService.registerInLecture(userId, lectureId);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<CustomUser> registerInLecture(@PathVariable final Long userId, @PathVariable final Long lectureId) {
+        CustomUser customUser = userService.registerInLecture(userId, lectureId);
+        return new ResponseEntity<>(customUser, HttpStatus.OK);
     }
 
 

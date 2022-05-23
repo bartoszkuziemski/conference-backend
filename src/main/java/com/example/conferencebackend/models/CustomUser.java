@@ -11,8 +11,8 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "[User]") // User is a keyword in SQL, we have to write name in []
-public class User {
+@Table(name = "custom_user") // User is a keyword in SQL, we have to write name in []: "[User]"
+public class CustomUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,10 +38,10 @@ public class User {
         registeredLectures.remove(lecture);
     }
 
-    public static User from(UserDto userDto) {
-        User user = new User();
-        user.setEmail(userDto.getEmail());
-        user.setLogin(userDto.getLogin());
-        return user;
+    public static CustomUser from(UserDto userDto) {
+        CustomUser customUser = new CustomUser();
+        customUser.setEmail(userDto.getEmail());
+        customUser.setLogin(userDto.getLogin());
+        return customUser;
     }
 }

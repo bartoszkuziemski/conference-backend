@@ -7,9 +7,8 @@ import java.util.Set;
 import static com.example.conferencebackend.security.ApplicationUserPermission.*;
 
 public enum ApplicationUserRole {
-    STUDENT(Sets.newHashSet()),
-    ADMIN(Sets.newHashSet(COURSE_READ, COURSE_WRITE, STUDENT_READ, STUDENT_WRITE)),
-    ADMINTRAINEE(Sets.newHashSet(COURSE_READ, STUDENT_READ));
+    CUSTOM_USER(Sets.newHashSet(LECTURE_READ, USER_WRITE)),
+    ADMIN(Sets.newHashSet(LECTURE_READ, LECTURE_WRITE, USER_READ, USER_WRITE));
 
 
     private final Set<ApplicationUserPermission> permissions;

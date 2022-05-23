@@ -25,7 +25,7 @@ public class Lecture {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "registeredLectures")
-    private List<User> users = new ArrayList<>();
+    private List<CustomUser> customUsers = new ArrayList<>();
 
 //    public void addUser(User user) {
 //        users.add(user);

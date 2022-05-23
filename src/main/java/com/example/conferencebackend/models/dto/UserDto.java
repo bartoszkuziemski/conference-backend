@@ -1,6 +1,6 @@
 package com.example.conferencebackend.models.dto;
 
-import com.example.conferencebackend.models.User;
+import com.example.conferencebackend.models.CustomUser;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,12 +18,12 @@ public class UserDto {
 
     private List<LectureDto> registeredLecturesDto = new ArrayList<>();
 
-    public static UserDto from(User user) {
+    public static UserDto from(CustomUser customUser) {
         UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setLogin(user.getLogin());
-        userDto.setEmail(user.getEmail());
-        userDto.setRegisteredLecturesDto(user.getRegisteredLectures().stream().map(LectureDto::from).collect(Collectors.toList()));
+        userDto.setId(customUser.getId());
+        userDto.setLogin(customUser.getLogin());
+        userDto.setEmail(customUser.getEmail());
+        userDto.setRegisteredLecturesDto(customUser.getRegisteredLectures().stream().map(LectureDto::from).collect(Collectors.toList()));
         return userDto;
     }
 

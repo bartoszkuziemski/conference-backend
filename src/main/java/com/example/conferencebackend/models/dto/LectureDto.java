@@ -25,7 +25,7 @@ public class LectureDto {
         lectureDto.setSubject(lecture.getSubject());
         lectureDto.setStartTime(lecture.getStartTime());
         lectureDto.setEndTime(lecture.getEndTime());
-        lectureDto.setUsersDto(lecture.getUsers().stream().map(UserDto::from).collect(Collectors.toList()));
+        lectureDto.setUsersDto(lecture.getCustomUsers().stream().map(UserDto::from).collect(Collectors.toList()));
         return lectureDto;
     }
 

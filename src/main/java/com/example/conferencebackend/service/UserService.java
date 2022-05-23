@@ -1,7 +1,7 @@
 package com.example.conferencebackend.service;
 
+import com.example.conferencebackend.models.CustomUser;
 import com.example.conferencebackend.models.Lecture;
-import com.example.conferencebackend.models.User;
 import com.example.conferencebackend.models.exception.UserNotFoundException;
 import com.example.conferencebackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,46 +24,50 @@ public class UserService {
         this.lectureService = lectureService;
     }
 
-    public User addUser(User user) {
-        return userRepository.save(user);
+    public CustomUser addUser(CustomUser customUser) {
+        return userRepository.save(customUser);
     }
 
-    public List<User> getUsers() {
+    public List<CustomUser> getUsers() {
         return StreamSupport.stream(userRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 
-    public User getUser(Long id) {
+    public CustomUser getUser(Long id) {
         return userRepository.findById(id).orElseThrow( () -> new UserNotFoundException(id));
     }
 
-    public User deleteUser(Long id) {
-        User user = getUser(id);
-        userRepository.delete(user);
-        return user;
+    public CustomUser getUserByLogin(String login) {
+        CustomUser customUser = userRepository.findByLogin(login);
+        return customUser;
+    }
+
+    public CustomUser deleteUser(Long id) {
+        CustomUser customUser = getUser(id);
+        userRepository.delete(customUser);
+        return customUser;
     }
 
     @Transactional
-    public User editUser(Long id, User user) {
-        User userToEdit = getUser(id);
-        userToEdit.setEmail(user.getEmail());
-        return userToEdit;
+    public CustomUser editUser(Long id, CustomUser customUser) {
+        CustomUser customUserToEdit = getUser(id);
+        customUserToEdit.setEmail(customUser.getEmail());
+        return customUserToEdit;
     }
 
     @Transactional
-    public User registerInLecture(Long userId, Long lectureId) {
-        User user = getUser(userId);
+    public CustomUser registerInLecture(Long userId, Long lectureId) {
+        CustomUser customUser = getUser(userId);
         Lecture lecture = lectureService.getLecture(lectureId);
-        // lecture.addUser(user);
-        user.registerInLecture(lecture);
-        return user;
+        customUser.registerInLecture(lecture);
+        return customUser;
     }
 
     @Transactional
-    public User registerOutOfLecture(Long userId, Long lectureId) {
-        User user = new User();
+    public CustomUser registerOutOfLecture(Long userId, Long lectureId) {
+        CustomUser customUser = new CustomUser();
         Lecture lecture = lectureService.getLecture(lectureId);
-        user.registerOutOfLecture(lecture);
-        return user;
+        customUser.registerOutOfLecture(lecture);
+        return customUser;
     }
 
 }
