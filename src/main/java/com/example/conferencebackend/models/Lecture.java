@@ -1,6 +1,7 @@
 package com.example.conferencebackend.models;
 
 import com.example.conferencebackend.models.dto.LectureDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,6 +23,7 @@ public class Lecture {
     private String startTime;
     private String endTime;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "registeredLectures")
     private List<User> users = new ArrayList<>();
 

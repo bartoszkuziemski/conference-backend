@@ -1,7 +1,6 @@
 package com.example.conferencebackend.models;
 
 import com.example.conferencebackend.models.dto.UserDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,7 +21,6 @@ public class User {
     private String login;
     private String email;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "registered_lectures",
