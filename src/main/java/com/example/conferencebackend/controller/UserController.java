@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
@@ -32,9 +31,9 @@ public class UserController {
 //        return new ResponseEntity<>(customUser, HttpStatus.OK);
 //    }
 
-    @GetMapping(value = "{login}")
-    public ResponseEntity<CustomUser> getUserByLogin(@PathVariable final String login) {
-        CustomUser customUser = userService.getUserByLogin(login);
+    @GetMapping(value = "{username}")
+    public ResponseEntity<CustomUser> getUserByUsername(@PathVariable final String username) {
+        CustomUser customUser = userService.getUserByUsername(username);
         return new ResponseEntity<>(customUser, HttpStatus.OK);
     }
 
@@ -44,21 +43,26 @@ public class UserController {
         return new ResponseEntity<>(customUsers, HttpStatus.OK);
     }
 
-    @Transactional
-    @DeleteMapping(value = "{id}")
-    public ResponseEntity<CustomUser> deleteUser(@PathVariable final Long id) {
-        CustomUser customUser = userService.deleteUser(id);
+    @DeleteMapping(value = "{username}")
+    public ResponseEntity<String> deleteUser(@PathVariable final String username) {
+        userService.deleteUser(username);
+        return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
+    }
+
+    @PutMapping(value = "{username}")
+    public ResponseEntity<CustomUser> editUser(@PathVariable final String username, @RequestBody final CustomUser customUser) {
+        return new ResponseEntity<>(userService.editUser(username, customUser), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "{username}/lectures/{lectureId}/register")
+    public ResponseEntity<CustomUser> registerInLecture(@PathVariable final String username, @PathVariable final Long lectureId) {
+        CustomUser customUser = userService.registerInLecture(username, lectureId);
         return new ResponseEntity<>(customUser, HttpStatus.OK);
     }
 
-    @PutMapping(value = "{id}")
-    public ResponseEntity<CustomUser> editUser(@PathVariable final Long id, @RequestBody final CustomUser customUser) {
-        return new ResponseEntity<>(userService.editUser(id, customUser), HttpStatus.OK);
-    }
-
-    @PutMapping(value = "{userId}/lectures/{lectureId}/add")
-    public ResponseEntity<CustomUser> registerInLecture(@PathVariable final Long userId, @PathVariable final Long lectureId) {
-        CustomUser customUser = userService.registerInLecture(userId, lectureId);
+    @DeleteMapping(value = "{username}/lectures/{lectureId}/register")
+    public ResponseEntity<CustomUser> registerOutOfLecture(@PathVariable final String username, @PathVariable final Long lectureId) {
+        CustomUser customUser = userService.registerOutOfLecture(username, lectureId);
         return new ResponseEntity<>(customUser, HttpStatus.OK);
     }
 

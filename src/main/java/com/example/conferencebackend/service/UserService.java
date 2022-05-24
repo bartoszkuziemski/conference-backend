@@ -2,12 +2,13 @@ package com.example.conferencebackend.service;
 
 import com.example.conferencebackend.models.CustomUser;
 import com.example.conferencebackend.models.Lecture;
+import com.example.conferencebackend.models.exception.UserAlreadyExistsException;
 import com.example.conferencebackend.models.exception.UserNotFoundException;
 import com.example.conferencebackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -25,46 +26,53 @@ public class UserService {
     }
 
     public CustomUser addUser(CustomUser customUser) {
-        return userRepository.save(customUser);
+        CustomUser userToAdd = userRepository.findByUsername(customUser.getUsername());
+        if (userToAdd == null) {
+            return userRepository.save(customUser);
+        } else {
+            throw new UserAlreadyExistsException(customUser.getUsername());
+        }
     }
 
     public List<CustomUser> getUsers() {
         return StreamSupport.stream(userRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
 
-    public CustomUser getUser(Long id) {
-        return userRepository.findById(id).orElseThrow( () -> new UserNotFoundException(id));
-    }
+//    public CustomUser getUser(Long id) {
+//        return userRepository.findById(id).orElseThrow( () -> new UserNotFoundException(id));
+//    }
 
-    public CustomUser getUserByLogin(String login) {
-        CustomUser customUser = userRepository.findByLogin(login);
+    public CustomUser getUserByUsername(String username) {
+        CustomUser customUser = userRepository.findByUsername(username);
+        if (customUser == null) {
+            throw new UserNotFoundException(username);
+        }
         return customUser;
     }
 
-    public CustomUser deleteUser(Long id) {
-        CustomUser customUser = getUser(id);
+    public void deleteUser(String username) {
+        CustomUser customUser = getUserByUsername(username);
         userRepository.delete(customUser);
-        return customUser;
     }
 
     @Transactional
-    public CustomUser editUser(Long id, CustomUser customUser) {
-        CustomUser customUserToEdit = getUser(id);
+    public CustomUser editUser(String username, CustomUser customUser) {
+        CustomUser customUserToEdit = getUserByUsername(username);
         customUserToEdit.setEmail(customUser.getEmail());
         return customUserToEdit;
     }
 
     @Transactional
-    public CustomUser registerInLecture(Long userId, Long lectureId) {
-        CustomUser customUser = getUser(userId);
+    public CustomUser registerInLecture(String username, Long lectureId) {
+        CustomUser customUser = getUserByUsername(username);
         Lecture lecture = lectureService.getLecture(lectureId);
         customUser.registerInLecture(lecture);
         return customUser;
     }
 
     @Transactional
-    public CustomUser registerOutOfLecture(Long userId, Long lectureId) {
-        CustomUser customUser = new CustomUser();
+    public CustomUser registerOutOfLecture(String username, Long lectureId) {
+        CustomUser customUser = getUserByUsername(username);
         Lecture lecture = lectureService.getLecture(lectureId);
         customUser.registerOutOfLecture(lecture);
         return customUser;
