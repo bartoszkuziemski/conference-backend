@@ -2,9 +2,8 @@ package com.example.conferencebackend.service;
 
 import com.example.conferencebackend.models.CustomUser;
 import com.example.conferencebackend.models.Lecture;
-import com.example.conferencebackend.models.exception.UserAlreadyExistsException;
-import com.example.conferencebackend.models.exception.UserAlreadyRegisteredException;
-import com.example.conferencebackend.models.exception.UserNotFoundException;
+import com.example.conferencebackend.models.Room;
+import com.example.conferencebackend.models.exception.*;
 import com.example.conferencebackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,12 +66,18 @@ public class UserService {
     public CustomUser registerInLecture(String username, Long lectureId) {
         CustomUser customUser = getUserByUsername(username);
         Lecture lecture = lectureService.getLecture(lectureId);
-        Long newLectureRoomId = lecture.getRoom().getId();
+        Room room = lecture.getRoom();
+        if (room.getCapacity() <= 0) {
+            throw new RoomFullException(room.getId());
+        }
+        room.decreaseCapacity();
+
+        Long newLectureRoomId = room.getId();
         List<Lecture> lectures = customUser.getRegisteredLectures();
         for (Lecture l : lectures) {
             Long roomId = l.getRoom().getId();
             if (roomId == newLectureRoomId) {
-                throw new UserAlreadyRegisteredException(lecture.getRoom().getStartTime());
+                throw new UserAlreadyRegisteredException(room.getStartTime());
             }
         }
         customUser.registerInLecture(lecture);
@@ -83,8 +88,16 @@ public class UserService {
     public CustomUser registerOutOfLecture(String username, Long lectureId) {
         CustomUser customUser = getUserByUsername(username);
         Lecture lecture = lectureService.getLecture(lectureId);
-        customUser.registerOutOfLecture(lecture);
-        return customUser;
+        Room room = lecture.getRoom();
+        List<Lecture> lectures = customUser.getRegisteredLectures();
+        for (Lecture l : lectures) {
+            if (l.getId() == lectureId) {
+                room.increaseCapacity();
+                customUser.registerOutOfLecture(lecture);
+                return customUser;
+            }
+        }
+        throw new UserNotRegisteredException(lectureId);
     }
 
 }

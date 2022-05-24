@@ -26,4 +26,16 @@ public class ErrorHandler {
         return exception.getMessage();
     }
 
+    @ExceptionHandler(RoomFullException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleUserAlreadyRegistered(RoomFullException exception) {
+        return exception.getMessage();
+    }
+
+    @ExceptionHandler(UserNotRegisteredException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleUserAlreadyRegistered(UserNotRegisteredException exception) {
+        return exception.getMessage();
+    }
+
 }

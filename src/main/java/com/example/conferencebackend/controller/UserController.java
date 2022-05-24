@@ -1,6 +1,7 @@
 package com.example.conferencebackend.controller;
 
 import com.example.conferencebackend.models.CustomUser;
+import com.example.conferencebackend.models.Lecture;
 import com.example.conferencebackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,9 +33,10 @@ public class UserController {
 //    }
 
     @GetMapping(value = "{username}")
-    public ResponseEntity<CustomUser> getUserByUsername(@PathVariable final String username) {
+    public ResponseEntity<List<Lecture>> getUserByUsername(@PathVariable final String username) {
         CustomUser customUser = userService.getUserByUsername(username);
-        return new ResponseEntity<>(customUser, HttpStatus.OK);
+        List<Lecture> lectures = customUser.getRegisteredLectures();
+        return new ResponseEntity<>(lectures, HttpStatus.OK);
     }
 
     @GetMapping
