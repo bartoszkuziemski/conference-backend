@@ -32,12 +32,14 @@ public class ApplicationSecurityConfig {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "index", "/lectures", "/**").permitAll()
+                .antMatchers("/", "index", "/lectures", "/**", "/console/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/users").hasRole(ADMIN.name())
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .antMatchers( "/users/**").permitAll()
                 .anyRequest()
                 .authenticated()
+                .and()
+                .headers().frameOptions().disable()
                 .and()
                 .httpBasic();
 

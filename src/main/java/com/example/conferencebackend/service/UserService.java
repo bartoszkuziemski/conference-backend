@@ -3,6 +3,7 @@ package com.example.conferencebackend.service;
 import com.example.conferencebackend.models.CustomUser;
 import com.example.conferencebackend.models.Lecture;
 import com.example.conferencebackend.models.exception.UserAlreadyExistsException;
+import com.example.conferencebackend.models.exception.UserAlreadyRegisteredException;
 import com.example.conferencebackend.models.exception.UserNotFoundException;
 import com.example.conferencebackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,14 @@ public class UserService {
     public CustomUser registerInLecture(String username, Long lectureId) {
         CustomUser customUser = getUserByUsername(username);
         Lecture lecture = lectureService.getLecture(lectureId);
+        Long newLectureRoomId = lecture.getRoom().getId();
+        List<Lecture> lectures = customUser.getRegisteredLectures();
+        for (Lecture l : lectures) {
+            Long roomId = l.getRoom().getId();
+            if (roomId == newLectureRoomId) {
+                throw new UserAlreadyRegisteredException(lecture.getRoom().getStartTime());
+            }
+        }
         customUser.registerInLecture(lecture);
         return customUser;
     }

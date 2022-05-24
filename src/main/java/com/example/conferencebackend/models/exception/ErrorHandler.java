@@ -20,4 +20,10 @@ public class ErrorHandler {
         return exception.getMessage();
     }
 
+    @ExceptionHandler(UserAlreadyRegisteredException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleUserAlreadyRegistered(UserAlreadyRegisteredException exception) {
+        return exception.getMessage();
+    }
+
 }

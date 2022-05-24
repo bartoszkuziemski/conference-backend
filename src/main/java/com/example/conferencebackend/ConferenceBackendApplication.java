@@ -1,13 +1,12 @@
 package com.example.conferencebackend;
 
 import com.example.conferencebackend.models.Lecture;
+import com.example.conferencebackend.models.Room;
 import com.example.conferencebackend.repository.LectureRepository;
+import com.example.conferencebackend.repository.RoomRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootApplication
 public class ConferenceBackendApplication {
@@ -16,42 +15,52 @@ public class ConferenceBackendApplication {
 		ConfigurableApplicationContext configurableApplicationContext = SpringApplication.run(ConferenceBackendApplication.class, args);
 
 		LectureRepository lectureRepository = configurableApplicationContext.getBean(LectureRepository.class);
-//		UserRepository userRepository = configurableApplicationContext.getBean(UserRepository.class);
-//
-//		User bartek = new User("bartek", "bartek@gmail.com");
-//		User tomek = new User("tomek", "tomek@gmail.com");
-//		User ania = new User("ania", "ania@gmail.com");
-//
-//		List<User> users = new ArrayList<>();
-//		users.add(bartek);
-//		users.add(tomek);
-//		users.add(ania);
-//
-		Lecture lecture1 = new Lecture();
-		lecture1.setSubject("Subject1");
-		lecture1.setStartTime("10:00");
-		lecture1.setEndTime("11:45");
-		Lecture lecture2 = new Lecture();
-		lecture2.setSubject("Subject2");
-		lecture2.setStartTime("10:00");
-		lecture2.setEndTime("11:45");
-		Lecture lecture3 = new Lecture();
-		lecture3.setSubject("Subject3");
-		lecture3.setStartTime("10:00");
-		lecture3.setEndTime("11:45");
 
-		List<Lecture> lectures = new ArrayList<>();
-		lectures.add(lecture1);
-		lectures.add(lecture2);
-		lectures.add(lecture3);
-		lectureRepository.saveAll(lectures);
-//
-//		bartek.registerInLecture(lecture1);
-//		bartek.registerInLecture(lecture2);
-//		ania.registerInLecture(lecture1);
-//		tomek.registerInLecture(lecture2);
-//
-//		userRepository.saveAll(users);
+		Lecture lecture1 = new Lecture("Java");
+		Lecture lecture2 = new Lecture("Python");
+		Lecture lecture3 = new Lecture("C++");
+		Lecture lecture4 = new Lecture("Java");
+		Lecture lecture5 = new Lecture("Python");
+		Lecture lecture6 = new Lecture("C++");
+		Lecture lecture7 = new Lecture("Java");
+		Lecture lecture8 = new Lecture("Python");
+		Lecture lecture9 = new Lecture("C++");
+
+//		List<Lecture> lectures1 = new ArrayList<>();
+//		lectures1.add(lecture1);
+//		lectures1.add(lecture2);
+//		lectures1.add(lecture3);
+//		lectureRepository.saveAll(lectures1);
+		lectureRepository.save(lecture1);
+		lectureRepository.save(lecture2);
+		lectureRepository.save(lecture3);
+		lectureRepository.save(lecture4);
+		lectureRepository.save(lecture5);
+		lectureRepository.save(lecture6);
+		lectureRepository.save(lecture7);
+		lectureRepository.save(lecture8);
+		lectureRepository.save(lecture9);
+
+		RoomRepository roomRepository = configurableApplicationContext.getBean(RoomRepository.class);
+
+		Room roomA = new Room("10:00", "11:45");
+		Room roomB = new Room("12:00", "13:45");
+		Room roomC = new Room("14:00", "15:45");
+
+		roomA.addLecture(lecture1);
+		roomA.addLecture(lecture2);
+		roomA.addLecture(lecture3);
+		roomB.addLecture(lecture4);
+		roomB.addLecture(lecture5);
+		roomB.addLecture(lecture6);
+		roomC.addLecture(lecture7);
+		roomC.addLecture(lecture8);
+		roomC.addLecture(lecture9);
+
+		roomRepository.save(roomA);
+		roomRepository.save(roomB);
+		roomRepository.save(roomC);
+
 
 	}
 

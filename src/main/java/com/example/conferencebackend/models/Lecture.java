@@ -19,14 +19,22 @@ public class Lecture {
     private Long id;
 
     private String subject;
-    private String startTime;
-    private String endTime;
+
+    @JsonIgnore
+    @ManyToOne
+    private Room room;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "registeredLectures")
     private List<CustomUser> customUsers = new ArrayList<>();
 
-//    public static Lecture from(LectureDto lectureDto) {
+    public Lecture() {}
+
+    public Lecture(String subject) {
+        this.subject = subject;
+    }
+
+    //    public static Lecture from(LectureDto lectureDto) {
 //        Lecture lecture = new Lecture();
 //        lecture.setSubject(lectureDto.getSubject());
 //        lecture.setStartTime(lectureDto.getStartTime());
