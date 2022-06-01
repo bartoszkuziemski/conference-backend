@@ -1,3 +1,5 @@
+Przykładowe zapytania
+
 GET localhost:8080/rooms - wyświetlenie planu konferencji
 
 GET localhost:8080/users - wyświetlenie wszystkich użytkowników wraz z adresami email, dostępne tylko dla organizatora: nazwa:admin, hasło: admin
@@ -22,6 +24,3 @@ PUT localhost:8080/users/User_1/lectures/1/register - zarejestrowanie użytkowni
 
 DELETE localhost:8080/users/User_1/lectures/1/register - anulowanie rejestracji użytkownika "User_1" w wykładzie o id = 1
 
-
-
-Narzędzia do uruchomienia projektu: IntelliJ IDEA, dodatkowo Postman ( do zapytań usług REST )
